@@ -1,0 +1,38 @@
+<!-- Always start with writing <!DOCTYPE html> as first thing -->
+<!DOCTYPE html>
+<html lang="en">
+<!-- pass the language, lang="en" -->
+    <title> Data Collector App </title>
+    <!-- This title will be shown on the browser bar -->
+    <head>
+        <link href="../static/frontend.css" rel="stylesheet">
+        <!-- As putting the link tag here, html script will know where to look for css styling -->
+        <!-- css file and html file are not in the same folder, css file should be specified as ""../static/frontend.css" -->
+        <!-- Need to declare that I'm working with a style sheet -->
+    </head>
+        <body>
+            <div class="container">
+            <!-- A division is to organize the html elements better and allows for better referencing from css script -->
+            <!-- So, the division will wrap up the entire container (page) -->
+                <h1> Collecting Height </h1>
+                <h3> Please fill the entries to get population statistics on height </h3>
+                <form action="{{url_for('success')}}" method="POST">
+                <!-- This form expects the user to enter some data, so need to perform an action -->
+                <!-- After user enters the data and presses the button, action will thake user to success page -->
+                <!-- This POST method is a post request for sending a data through web servers -->
+                    <input title="Your email will be safe with us" placeholder="Enter your email address" type="email" name="email_name" required> <br>
+                    <!-- input title is showns when user holds the cursor in the input for a while -->
+                    <!-- placeholder is the default text that input shows -->
+                    <!-- Type should be specified as email. So, the input will be able to validate the email address of user
+                        If user puts anything other than an email address such as just text or numbers, 
+                        there will be a pop-up saying "Please include an @ in the email address" -->
+                    <!-- name will used by Python to pull off the email address that user enters in the input -->
+                    <!-- As making them required, user cannot skip the entry, cannot press submit without entered the data  -->
+                    <!-- <br> is for break the line. If you don't break the line, all entries will come side by side not one under the other  -->
+                    <input title="Your data will be safe with us" placeholder="Enter your height in cm" type="number" min="50", max="300" name="height_name" required> <br>
+                    <!-- For the height type, it can be a text. However, to give a min/max limit, it should be defined as number -->
+                    <button type="submit"> Submit </button>
+                </form>
+            </div>
+        </body>
+</html>
