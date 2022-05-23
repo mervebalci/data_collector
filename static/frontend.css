@@ -45,3 +45,9 @@ html, body {
     margin: 300px;
     font-size: 22px;
 }
+
+.message {
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    color: #efa4a4;
+}

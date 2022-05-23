@@ -16,6 +16,9 @@
             <!-- So, the division will wrap up the entire container (page) -->
                 <h1> Collecting Height </h1>
                 <h3> Please fill the entries to get population statistics on height </h3>
+                <div class="message">
+                    {{text | safe}}
+                </div>
                 <form action="{{url_for('success')}}" method="POST">
                 <!-- This form expects the user to enter some data, so need to perform an action -->
                 <!-- After user enters the data and presses the button, action will thake user to success page -->

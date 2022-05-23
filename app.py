@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 # Creating an SQLAchemy object for flask application and then connecting the database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://user:password@localhost/height_collector'
-# Replace user with your username of pgAdmin, password with your pw
+# Replace user with your username of pgAdmin, password with your pw or else web page will give error
 # Now, the app knows where to look for a database
 db = SQLAlchemy(app)    # Creating SQLAlchemy object to store SQLAlchemy and the name of the app
 
@@ -43,10 +43,16 @@ def success():   # when this above URL is visited, success function will be exec
     if request.method == 'POST':
         email = request.form["email_name"]
         height = request.form["height_name"]   # Form element (email_name, height_name) is the same key in the index.html
-        return render_template("success.html")
-        # This request is being able to read the method of the request and stores that in this method object (line19)
-        # When the index.html page is reloaded, that creates GET request (GET /)
-        # When the data is entered by the user and submitted, that creates POST request (POST /success)
+        if db.session.query(Data).filter(Data.email_ ==  email).count() == 0:
+        # The reason count = 0 is to make sure this email address is being used the first time
+            data = Data(email, height)   # Creating an Object Instance of Data Class to keep record of the user email and height info
+            db.session.add(data)
+            db.session.commit()
+            return render_template("success.html")
+            # This request is being able to read the method of the request and stores that in this method object (line19)
+            # When the index.html page is reloaded, that creates GET request (GET /)
+            # When the data is entered by the user and submitted, that creates POST request (POST /success)
+    return render_template("index.html", text = "This email address has been used already. Please try with another!")
 
 
 if __name__ == '__main__':
