@@ -5,6 +5,7 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from send_email import send_email
+from sqlalchemy.sql import func
 
 
 app = Flask(__name__)
@@ -44,12 +45,16 @@ def success():   # when this above URL is visited, success function will be exec
     if request.method == 'POST':
         email = request.form["email_name"]
         height = request.form["height_name"]   # Form element (email_name, height_name) is the same key in the index.html
-        send_email(email, height)   # send_email is an Imported Function
         if db.session.query(Data).filter(Data.email_ ==  email).count() == 0:
         # The reason count = 0 is to make sure this email address is being used the first time
             data = Data(email, height)   # Creating an Object Instance of Data Class to keep record of the user email and height info
             db.session.add(data)
             db.session.commit()
+            # Calculating the Average Height of Users
+            average_height = db.session.query(func.avg(Data.height_)).scalar()
+            average_height = round(average_height, 1)
+            count = db.session.query(Data.height_).count()
+            send_email(email, height, average_height, count)   # send_email is an Imported Function
             return render_template("success.html")
             # This request is being able to read the method of the request and stores that in this method object (line19)
             # When the index.html page is reloaded, that creates GET request (GET /)
