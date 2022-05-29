@@ -4,6 +4,7 @@
 # request is to be able to access these http:// request that is being made from the browser to fetch the email address and the height
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from send_email import send_email
 
 
 app = Flask(__name__)
@@ -43,6 +44,7 @@ def success():   # when this above URL is visited, success function will be exec
     if request.method == 'POST':
         email = request.form["email_name"]
         height = request.form["height_name"]   # Form element (email_name, height_name) is the same key in the index.html
+        send_email(email, height)   # send_email is an Imported Function
         if db.session.query(Data).filter(Data.email_ ==  email).count() == 0:
         # The reason count = 0 is to make sure this email address is being used the first time
             data = Data(email, height)   # Creating an Object Instance of Data Class to keep record of the user email and height info
